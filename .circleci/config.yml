@@ -16,3 +16,4 @@ workflows:
     jobs:
       - install-yarn-example
       - node/test
+      - node/build
