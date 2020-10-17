@@ -1,25 +1,18 @@
+orbs:
+  node: circleci/node@4.0.0
+
 version: 2.1
+
 jobs:
-  build:
+  install-yarn-example:
     docker:
-      - image: circleci/node:12.9.1-browsers
-  
-    working_directory: ~/repo
-steps:
-      - checkout
+      - image: 'cimg/base:stable'
+    steps:
+      - node/install:
+          install-yarn: true
       
-      - restore_cache:
-        keys:
-          - v1-dependencies-{{ checksum "package.json" }}
-          - v1-dependencies-
-      
-      - run: yarn install
-   
-      - save_cache:
-        paths:
-          - node_modules
-          - ~/.npm 
-          - ~/.cache
-        key: v1-dependencies-{{ checksum "package.json" }}
-    
-      - run: yarn test
+workflows:
+  node-tests:
+    jobs:
+      - install-yarn-example
+      - node/test
